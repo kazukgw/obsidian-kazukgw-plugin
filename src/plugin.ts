@@ -14,6 +14,8 @@ export class MyPlugin extends Plugin {
 	settings: any;
 
 	async onload() {
+		this.saveDailyNoteDirSetting = this.saveDailyNoteDirSetting.bind(this);
+
 		await this.loadSettings();
 
 		commands.forEach((command) => {
