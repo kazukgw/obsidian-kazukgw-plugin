@@ -10,7 +10,8 @@ import { SummarizeCommand } from "command/summarize";
 import { DescribeConceptCommand } from "command/describeConcept";
 import { DescribeEnglishWardCommand } from "command/describeEnglishWard";
 import { DescribeEnglishSentenceCommand } from "command/describeEnglishSentence";
-import { LinkFromDailyNoteCommand } from "command/linkFromDailyNote";
+import { AddLinkToDailyNoteCommand } from "command/addLinkToDailyNote";
+import { AddBlockLinkToDailyNoteCommand } from "command/addBlockLinkToDailyNote";
 
 export const commands: CommandWithContext[] = [
     new AddTagPropertyCommand(),
@@ -23,5 +24,6 @@ export const commands: CommandWithContext[] = [
     new DescribeConceptCommand(),
     new DescribeEnglishWardCommand(),
     new DescribeEnglishSentenceCommand(),
-    new LinkFromDailyNoteCommand(),
+    new AddLinkToDailyNoteCommand(),
+    new AddBlockLinkToDailyNoteCommand(),
 ];

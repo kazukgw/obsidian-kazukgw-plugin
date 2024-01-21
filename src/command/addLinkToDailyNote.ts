@@ -6,9 +6,9 @@ import {
 
 import * as myutil from "myutil";
 
-export class LinkFromDailyNoteCommand implements CommandWithContext{
-    id = "link-from-daily-note";
-    name = "Link from daily note";
+export class AddLinkToDailyNoteCommand implements CommandWithContext{
+    id = "add-active-file-link-to-daily-note";
+    name = "Add link to daily note";
 
     enableSetting: CommandSettingItem = {
         commandId: this.id,

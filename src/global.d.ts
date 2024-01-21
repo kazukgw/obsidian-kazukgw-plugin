@@ -6,6 +6,9 @@ declare global {
 
 declare module "obsidian" {
     interface App {
+        commands: {
+            executeCommandById: (id: string) => Promise<any>;
+        };
         plugins: {
             plugins: {
                 "obsidian-hover-editor": {
