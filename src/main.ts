@@ -1,0 +1,1 @@
+export { MyPlugin as default } from "plugin";
