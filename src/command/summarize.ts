@@ -36,14 +36,13 @@ export class SummarizeCommand implements CommandWithContext {
 		const summarized = await summarize(content);
 
 		const targetFilePath = `${file.parent?.path}/${file.basename}__Summarized.md`;
-		let targetFile = app.vault.getAbstractFileByPath(targetFilePath);
+		const targetFile = await myutil.getOrCreateFile(targetFilePath);
 
-		let result;
-		if (targetFile != null) {
-			result = await app.vault.modify(targetFile as TFile, summarized);
-		} else {
-			result = await app.vault.create(targetFilePath, summarized);
-		}
+		await app.vault.modify(targetFile, summarized);
+		myutil.insertProperties(targetFile, {
+			summarizedFrom: `[[${file.path}]]`,
+		});
+
 		myutil.insertProperties(file, {
 			summarizedTo: `[[${targetFilePath}]]`,
 		});

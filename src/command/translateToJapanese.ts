@@ -9,6 +9,7 @@ import {
 import { translateToJapanese } from "chatAI";
 
 import * as myutil from "myutil";
+import { get } from "http";
 
 export class TranslateToJapaneseCommand implements CommandWithContext {
 	id = "translate-to-japanese";
@@ -35,14 +36,13 @@ export class TranslateToJapaneseCommand implements CommandWithContext {
 		const translated = await translateToJapanese(content);
 
 		const targetFilePath = `${file.parent?.path}/${file.basename}__Ja.md`;
-		let targetFile = app.vault.getAbstractFileByPath(targetFilePath);
+		const targetFile = await myutil.getOrCreateFile(targetFilePath);
 
-		let result;
-		if (targetFile != null) {
-			result = await app.vault.modify(targetFile as TFile, translated);
-		} else {
-			result = await app.vault.create(targetFilePath, translated);
-		}
+		await app.vault.modify(targetFile, translated);
+		myutil.insertProperties(targetFile, {
+			translatedFrom: `[[${file.path}]]`,
+		});
+
 		myutil.insertProperties(file, {
 			translatedTo: `[[${targetFilePath}]]`,
 		});
