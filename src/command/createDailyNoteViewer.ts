@@ -62,17 +62,19 @@ export class CreateDailyNoteViewer implements CommandWithContext {
 
         const dailyNoteViewer = await myutil.getOrCreateFile(dailyNoteViewerPath);
         // 内容をクリア
-        app.vault.modify(dailyNoteViewer, "");
+
 
         const latestDailyNote = dailyNoteFiles.shift();
         if(latestDailyNote == null){
             throw new Error("No daily note found");
         }
 
-        app.vault.append(dailyNoteViewer, `[[${latestDailyNote.path}]]\n`);
+        let content = `[[${latestDailyNote.path}]]\n`;
 
         dailyNoteFiles.forEach((f: TFile)=>{
-            app.vault.append(dailyNoteViewer, `![[${f.path}]]\n`);
+            content += `![[${f.path}]]\n`;
         });
+
+        app.vault.modify(dailyNoteViewer, content);
 	}
 }
