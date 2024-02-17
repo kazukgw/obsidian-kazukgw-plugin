@@ -12,6 +12,7 @@ import { DescribeEnglishWardCommand } from "command/describeEnglishWard";
 import { DescribeEnglishSentenceCommand } from "command/describeEnglishSentence";
 import { AddLinkToDailyNoteCommand } from "command/addLinkToDailyNote";
 import { AddBlockLinkToDailyNoteCommand } from "command/addBlockLinkToDailyNote";
+import { CreateDailyNoteViewer } from "command/createDailyNoteViewer";
 
 export const commands: CommandWithContext[] = [
     new AddTagPropertyCommand(),
@@ -26,4 +27,5 @@ export const commands: CommandWithContext[] = [
     new DescribeEnglishSentenceCommand(),
     new AddLinkToDailyNoteCommand(),
     new AddBlockLinkToDailyNoteCommand(),
+    new CreateDailyNoteViewer(),
 ];
