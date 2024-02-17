@@ -8,7 +8,7 @@ export const chatAI = async (params: any) => {
 
 	const reqBody = Object.assign(
 		{
-			model: "gpt-4-1106-preview",
+			model: "gpt-4-0125-preview",
 			top_p: 0.1,
 			messages: [{ role: "user", content: "Say Hi." }],
 			max_tokens: 4096,
@@ -53,8 +53,8 @@ export const chatAI = async (params: any) => {
 };
 
 export const translateToJapanese = async (content: string) => {
-	const batchsize = 20;
-	const parallelNum = 10;
+	const batchsize = 200;
+	const parallelNum = 4;
 
 	const contentArray = content.split("\n");
 	const contentArrayWithoutFrontmatter =
@@ -66,7 +66,7 @@ export const translateToJapanese = async (content: string) => {
 
 	function translate(c: string) {
 		return chatAI({
-			model: "gpt-3.5-turbo-16k",
+			model: "gpt-3.5-turbo-0125",
 			messages: [
 				{
 					role: "system",
@@ -100,7 +100,7 @@ export const translateToJapanese = async (content: string) => {
 
 export const summarize = async (content: string) => {
 	return chatAI({
-		model: "gpt-4-1106-preview",
+		model: "gpt-4-0125-preview",
 		messages: [
 			{
 				role: "system",
