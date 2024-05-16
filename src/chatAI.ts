@@ -8,7 +8,7 @@ export const chatAI = async (params: any) => {
 
 	const reqBody = Object.assign(
 		{
-			model: "gpt-4-0125-preview",
+			model: "gpt-4o",
 			top_p: 0.1,
 			messages: [{ role: "user", content: "Say Hi." }],
 			max_tokens: 4096,
