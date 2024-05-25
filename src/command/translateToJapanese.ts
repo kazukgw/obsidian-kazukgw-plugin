@@ -47,11 +47,6 @@ export class TranslateToJapaneseCommand implements CommandWithContext {
 			translatedTo: `[[${targetFilePath}]]`,
 		});
 
-		const dailyNotePath = myutil.getDailyNoteFilePath(
-			cmctx.plugin.getDailyNoteDirSetting()
-		);
-		myutil.appendTextToFile(dailyNotePath, `\n- [[${targetFilePath}]]\n`);
-
 		app.workspace.openLinkText("", targetFilePath, true);
 		cmctx.notice.setMessage("Finished !!");
 	}
