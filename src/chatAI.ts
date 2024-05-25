@@ -1,5 +1,7 @@
 import { requestUrl } from "obsidian";
 
+import { marked } from "marked";
+
 import { removeFrontmatterWithContentArray } from "myutil";
 
 export const chatAI = async (params: any) => {
@@ -11,7 +13,7 @@ export const chatAI = async (params: any) => {
 			model: "gpt-4o",
 			top_p: 0.1,
 			messages: [{ role: "user", content: "Say Hi." }],
-			max_tokens: 4096,
+			// max_tokens: 8096,
 		},
 		params
 	);
@@ -57,42 +59,15 @@ export const translateToJapanese = async (content: string) => {
 	const parallelNum = 4;
 
 	const contentArray = content.split("\n");
-	const contentArrayWithoutFrontmatter =
-		removeFrontmatterWithContentArray(contentArray);
-	const chunkedContent = splitArrayIntoChunk<string[]>(
-		splitArrayIntoChunk<string>(contentArrayWithoutFrontmatter, batchsize),
-		parallelNum
-	);
+	const contentWithoutFrontmatter =
+		removeFrontmatterWithContentArray(contentArray).join("\n");
 
-	function translate(c: string) {
-		return chatAI({
-			model: "gpt-3.5-turbo-0125",
-			messages: [
-				{
-					role: "system",
-					content: "次のコンテンツを日本語に翻訳してください。",
-				},
-				{
-					role: "user",
-					content: c,
-				},
-			],
-		});
-	}
+	const chunkedContent = splitMarkdownIntoChunks(contentWithoutFrontmatter);
+
 	let translatedText = "";
 	for (const chunk of chunkedContent) {
-		let results = await Promise.all(
-			chunk.map((lines: string[]) => {
-				const c = lines.join("\n");
-				if (c.trim().length === 0) {
-					return "";
-				}
-				return translate(lines.join("\n"));
-			})
-		);
-		if (results !== undefined) {
-			translatedText += results.join("\n");
-		}
+		const translaetdChunk = await translate(chunk);
+		translatedText += translaetdChunk;
 	}
 
 	return translatedText;
@@ -121,4 +96,49 @@ function splitArrayIntoChunk<T>(array: T[], chunkSize: number) {
 		(_, index) => array.slice(index * chunkSize, (index + 1) * chunkSize)
 	);
 	return result;
+}
+
+function splitMarkdownIntoChunks(markdown: string) {
+	const maxTokens = 200;
+    const tokens = marked.lexer(markdown);
+    let chunks = [];
+    let currentChunk = '';
+    let currentChunkLength = 0;
+
+    for (const token of tokens) {
+        const tokenText = marked.parser([token]);
+        const tokenLength = tokenText.length;
+
+        if (currentChunkLength + tokenLength > maxTokens * 4) {
+            chunks.push(currentChunk);
+            currentChunk = tokenText;
+            currentChunkLength = tokenLength;
+        } else {
+            currentChunk += tokenText;
+            currentChunkLength += tokenLength;
+        }
+    }
+
+    if (currentChunk) {
+        chunks.push(currentChunk);
+    }
+
+    return chunks;
+}
+
+
+async function translate(c: string) {
+	return chatAI({
+		model: "gpt-4o",
+		messages: [
+			{
+                role: 'system',
+                content: 'あなたは優秀な英語から日本語への翻訳家です。 次の英語のコンテンツを正確に日本語に翻訳してください。コンテンツがHTMLの場合はMarkdownに変換して出力してください。'
+            },
+            {
+                role: 'user',
+                content: c
+            }
+		],
+	});
 }
