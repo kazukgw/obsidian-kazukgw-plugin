@@ -14,6 +14,7 @@ import { AddLinkToDailyNoteCommand } from "command/addLinkToDailyNote";
 import { AddBlockLinkToDailyNoteCommand } from "command/addBlockLinkToDailyNote";
 import { CreateDailyNoteViewer } from "command/createDailyNoteViewer";
 import { ReadCompletion } from "command/readCompletion";
+import { Fav } from "command/fav";
 
 export const commands: CommandWithContext[] = [
     new AddTagPropertyCommand(),
@@ -30,4 +31,5 @@ export const commands: CommandWithContext[] = [
     new AddBlockLinkToDailyNoteCommand(),
     new CreateDailyNoteViewer(),
     new ReadCompletion(),
+    new Fav(),
 ];
