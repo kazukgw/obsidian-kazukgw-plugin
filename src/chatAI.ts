@@ -1,6 +1,7 @@
 import { requestUrl } from "obsidian";
 
 import { marked } from "marked";
+import TurndownService from "turndown";
 
 import { removeFrontmatterWithContentArray } from "myutil";
 
@@ -99,6 +100,7 @@ function splitArrayIntoChunk<T>(array: T[], chunkSize: number) {
 }
 
 function splitMarkdownIntoChunks(markdown: string) {
+	const td = new TurndownService();
 	const maxTokens = 200;
     const tokens = marked.lexer(markdown);
     let chunks = [];
@@ -111,10 +113,10 @@ function splitMarkdownIntoChunks(markdown: string) {
 
         if (currentChunkLength + tokenLength > maxTokens * 4) {
             chunks.push(currentChunk);
-            currentChunk = tokenText;
+            currentChunk = td.turndown(tokenText);
             currentChunkLength = tokenLength;
         } else {
-            currentChunk += tokenText;
+            currentChunk += td.turndown(tokenText);
             currentChunkLength += tokenLength;
         }
     }
@@ -133,7 +135,7 @@ async function translate(c: string) {
 		messages: [
 			{
                 role: 'system',
-                content: 'あなたは優秀な英語から日本語への翻訳家です。 次の英語のコンテンツを正確に日本語に翻訳してください。コンテンツがHTMLの場合はMarkdownに変換して出力してください。'
+                content: '次の英語のコンテンツをいい感じに日本語に翻訳してください。'
             },
             {
                 role: 'user',
