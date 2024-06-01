@@ -120,8 +120,6 @@ function splitMarkdownIntoChunks(markdown: string) {
         const tokenLength = tokenText.length;
 
         if (currentChunkLength + tokenLength > maxTokens * 4) {
-			console.log("------------");
-			console.log(currentChunk);
             chunks.push(currentChunk);
             currentChunk = td.turndown(tokenText) + "\n";
             currentChunkLength = tokenLength;
