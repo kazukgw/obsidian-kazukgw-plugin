@@ -100,8 +100,16 @@ function splitArrayIntoChunk<T>(array: T[], chunkSize: number) {
 }
 
 function splitMarkdownIntoChunks(markdown: string) {
-	const td = new TurndownService();
-	const maxTokens = 200;
+	const td = new TurndownService({
+		headingStyle: "atx",
+		bulletListMarker: "-",
+		codeBlockStyle: "fenced",
+		emDelimiter: "*",
+		strongDelimiter: "**",
+		linkStyle: "inlined",
+		linkReferenceStyle: "collapsed",
+	});
+	const maxTokens = 600;
     const tokens = marked.lexer(markdown);
     let chunks = [];
     let currentChunk = '';
@@ -112,11 +120,13 @@ function splitMarkdownIntoChunks(markdown: string) {
         const tokenLength = tokenText.length;
 
         if (currentChunkLength + tokenLength > maxTokens * 4) {
+			console.log("------------");
+			console.log(currentChunk);
             chunks.push(currentChunk);
-            currentChunk = td.turndown(tokenText);
+            currentChunk = td.turndown(tokenText) + "\n";
             currentChunkLength = tokenLength;
         } else {
-            currentChunk += td.turndown(tokenText);
+            currentChunk += td.turndown(tokenText) + "\n";
             currentChunkLength += tokenLength;
         }
     }
@@ -135,7 +145,7 @@ async function translate(c: string) {
 		messages: [
 			{
                 role: 'system',
-                content: '次の英語のコンテンツをいい感じに日本語に翻訳してください。'
+                content: '次の英語のコンテンツをいい感じに日本語に翻訳してください。原文で改行がある場合は正確に改行してください。'
             },
             {
                 role: 'user',
