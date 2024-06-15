@@ -44,12 +44,15 @@ export class CreateDailyNoteViewer implements CommandWithContext {
 	async callback(cmctx: CommandContext) {
         const dailyNoteFileNamePattern = new RegExp("\\d{4}-\\d{2}-\\d{2}.md");
 
+        const today = moment({});
+
         let dailyNoteNumber = Number.parseInt(cmctx.plugin.getCommandSetting(this.dailyNoteNumberSetting));
         dailyNoteNumber = Number.isNaN(dailyNoteNumber) ? 5 : dailyNoteNumber;
 
         const dailyNoteFiles = app.vault.getMarkdownFiles().filter((f: TFile)=>{
             return f.path.startsWith(cmctx.plugin.getDailyNoteDirSetting()) && 
-                dailyNoteFileNamePattern.test(f.name);
+                dailyNoteFileNamePattern.test(f.name) &&
+                moment(f.basename, "YYYY-MM-DD").isBefore(today);
         })
         .sort((a: TFile, b: TFile)=>{
             return - a.name.localeCompare(b.name);
