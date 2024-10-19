@@ -39,7 +39,8 @@ export class ReadCompletion implements CommandWithContext{
 
         const sourceFilePath = file.path;
         const targetFilePath = myutil.getDailyNoteFilePath(cmctx.plugin.getDailyNoteDirSetting());
-        const contentsToAppend = `\n- [[${sourceFilePath}]]\n`;
+        const currentTime = moment().format("HH:mm:ss");
+        const contentsToAppend = `\n- ${currentTime}\n    [[${sourceFilePath}]]\n`;
         myutil.appendTextToFile(targetFilePath, contentsToAppend)
     }
 }

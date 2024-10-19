@@ -27,7 +27,8 @@ export class AddBlockLinkToDailyNoteCommand implements CommandWithContext{
         await app.commands.executeCommandById('obsidian-copy-block-link:copy-link-to-block');
         const blockLink = await navigator.clipboard.readText();
         const targetFilePath = myutil.getDailyNoteFilePath(cmctx.plugin.getDailyNoteDirSetting());
-        const contentsToAppend = `\n- !${blockLink}\n`;
+        const currentTime = moment().format("HH:mm:ss");
+        const contentsToAppend = `\n- ${currentTime}\n    !${blockLink}\n`;
         myutil.appendTextToFile(targetFilePath, contentsToAppend)
 
         cmctx.notice.setMessage("Finished !!");
