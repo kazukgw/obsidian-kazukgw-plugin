@@ -32,7 +32,7 @@ export class Fav implements CommandWithContext{
         const sourceFilePath = file.path;
         const targetFilePath = myutil.getDailyNoteFilePath(cmctx.plugin.getDailyNoteDirSetting());
         const currentTime = moment().format("HH:mm:ss");
-        const contentsToAppend = `\n- ${currentTime}\n    [[${sourceFilePath}]]\n`;
+        const contentsToAppend = `\n- ${currentTime}\n    Fav:[[${sourceFilePath}]]\n`;
         myutil.appendTextToFile(targetFilePath, contentsToAppend)
     }
 }
