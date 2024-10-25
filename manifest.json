@@ -1,7 +1,7 @@
 {
 	"id": "obsidian-kazukgw-plugin",
 	"name": "kazukgw's Obsidian Plugin",
-	"version": "1.2.5",
+	"version": "1.2.7",
 	"minAppVersion": "1.6.0",
 	"description": "kazukgw private plugin for Obsidian",
 	"author": "kazukgw",

@@ -1,5 +1,6 @@
 import {
     TFile,
+	MarkdownView
 } from "obsidian";
 
 /**
@@ -215,3 +216,12 @@ export const removeFrontmatter = (content: string): string => {
 }
 
 
+/**
+ * 現在アクティブなメインビューのノートのファイル名を wiki リンク形式で取得します。
+ * @returns wiki リンク形式のファイルパス
+ */
+export const getActiveFileName = (): string => {
+	// const leaves = app.workspace.getLeavesOfType("markdown");
+	const file = app.workspace.getActiveFile();
+	return file != null ? `[[${file.basename}]]` : "";
+}

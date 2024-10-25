@@ -9,6 +9,7 @@ import { AddBlockLinkToDailyNoteCommand } from "command/addBlockLinkToDailyNote"
 import { CreateDailyNoteViewer } from "command/createDailyNoteViewer";
 import { ReadCompletion } from "command/readCompletion";
 import { Fav } from "command/fav";
+import { GetActiveNoteFileNameCommand } from "command/getActiveNoteFilePath";
 
 export const commands: CommandWithContext[] = [
     new AddTagPropertyCommand(),
@@ -20,4 +21,5 @@ export const commands: CommandWithContext[] = [
     new CreateDailyNoteViewer(),
     new ReadCompletion(),
     new Fav(),
+    new GetActiveNoteFileNameCommand(), 
 ];
